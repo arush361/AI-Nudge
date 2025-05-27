@@ -2,8 +2,6 @@
 
 **AI Nudge** transforms your new tab page into an intelligent productivity hub—nudging you to leverage the power of AI at just the right moment.
 
-![Hero](assets/screenshot_1280x800.jpg)
-
 ## ✨ Features
 
 - 🕒 **Clean New Tab UI** – Displays time, local weather, and an elegant interface.
