@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>New Tab</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+    .container {
+      width: 100%;
+      max-width: 800px;
+      padding-top: 80px;
+      text-align: center;
+    }
+    .search-box {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto 60px;
+      display: block;
+      padding: 16px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+    .search-box:focus {
+      outline: none;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+      transform: translateY(-1px);
+    }
+    .time {
+      font-size: 72px;
+      font-weight: 300;
+      color: #1a1a1a;
+      margin-bottom: 16px;
+    }
+    .date-weather {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 60px;
+    }
+    .date {
+      font-size: 20px;
+      color: #4a4a4a;
+      margin-bottom: 0;
+    }
+    .weather {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 4px 12px;
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 10px;
+      backdrop-filter: blur(8px);
+    }
+    .weather-icon {
+      width: 28px;
+      height: 28px;
+      filter: brightness(0.8);
+    }
+    .weather-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .temperature {
+      font-size: 20px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+    .weather-description {
+      font-size: 16px;
+      color: #4a4a4a;
+    }
+    .weather-location {
+      display: none;
+    }
+    .daily-quote {
+      text-align: center;
+      max-width: 900px;
+      margin: -30px auto 40px;
+      padding: 15px 30px;
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(8px);
+      border-radius: 12px;
+      transition: all 0.3s ease;
+    }
+    .daily-quote:hover {
+      background: rgba(255, 255, 255, 0.5);
+      transform: translateY(-2px);
+    }
+    .quote-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .quote-text {
+      font-size: 16px;
+      color: #2c3e50;
+      font-style: italic;
+    }
+    .quote-author {
+      font-size: 16px;
+      color: #34495e;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .weather-message {
+      text-align: left;
+      padding: 0;
+      color: #4a4a4a;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+    .weather-alert {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      font-size: 16px;
+      cursor: pointer;
+      filter: drop-shadow(0 0 2px rgba(0,0,0,0.2));
+    }
+    .apps-section {
+      margin-bottom: 60px;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      gap: 10px;
+    }
+    .section-title {
+      font-size: 20px;
+      color: #333;
+      font-weight: 500;
+      margin: 0;
+    }
+    .product-hunt-section {
+      margin-bottom: 60px;
+    }
+    .product-hunt-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .product-hunt-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .product-hunt-logo svg {
+      width: 32px;
+      height: 32px;
+      fill: #DA552F;
+    }
+    .products-grid {
+      display: flex;
+      gap: 15px;
+      max-width: 1200px;
+      margin: 0 auto;
+      overflow-x: auto;
+      padding: 5px;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE and Edge */
+    }
+    .products-grid::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
+    }
+    .product-card {
+      flex: 0 0 220px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      min-width: 0; /* Enable text truncation */
+    }
+    .product-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    }
+    .product-thumbnail {
+      width: 100%;
+      height: 110px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+    .product-info {
+      flex: 1;
+      min-width: 0; /* Enable text truncation */
+    }
+    .product-name {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .product-tagline {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 6px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      line-height: 1.3;
+      height: 31px;
+    }
+    .product-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: #888;
+    }
+    .product-votes {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .product-votes svg {
+      width: 14px;
+      height: 14px;
+      fill: #da552f;
+    }
+    .product-comments {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .product-comments svg {
+      width: 12px;
+      height: 12px;
+      fill: #888;
+    }
+    .apps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 20px;
+      max-width: 600px;
+      margin: 0 auto 40px;
+    }
+    .app-tile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: #333;
+      padding: 15px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    .app-tile:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    }
+    .app-icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 8px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+    .app-name {
+      font-size: 14px;
+      font-weight: 500;
+      margin-top: 8px;
+    }
+    .app-tile.ai {
+      background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.8));
+    }
+    .app-tile.productivity {
+      background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(240,240,255,0.8));
+    }
+    .customize-btn {
+      background: none;
+      border: none;
+      padding: 5px;
+      cursor: pointer;
+      color: #666;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .customize-btn:hover {
+      background: rgba(0,0,0,0.05);
+      color: #333;
+    }
+    .customize-modal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      z-index: 1000;
+      max-width: 90%;
+      width: 400px;
+    }
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+    }
+    .modal-title {
+      font-size: 18px;
+      font-weight: 500;
+      margin: 0 0 20px;
+      color: #333;
+    }
+    .app-list {
+      max-height: 300px;
+      overflow-y: auto;
+      margin-bottom: 20px;
+    }
+    .app-option {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .app-option:hover {
+      background: #f5f5f5;
+    }
+    .app-option input {
+      margin-right: 12px;
+    }
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    .modal-btn {
+      padding: 8px 16px;
+      border-radius: 6px;
+      border: none;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .modal-btn.primary {
+      background: #007AFF;
+      color: white;
+    }
+    .modal-btn.primary:hover {
+      background: #0056b3;
+    }
+    .modal-btn.secondary {
+      background: #f5f5f5;
+      color: #333;
+    }
+    .modal-btn.secondary:hover {
+      background: #e5e5e5;
+    }
+    .remove-app {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.1);
+      color: #666;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .app-tile:hover .remove-app {
+      display: flex;
+    }
+    .remove-app:hover {
+      background: rgba(0,0,0,0.2);
+      color: #333;
+    }
+    .add-custom-app {
+      border-top: 1px solid #eee;
+      margin-top: 20px;
+      padding-top: 20px;
+    }
+    .add-custom-app h4 {
+      margin: 0 0 15px;
+      font-size: 16px;
+      color: #333;
+    }
+    .custom-app-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-group label {
+      font-size: 14px;
+      color: #666;
+    }
+    .form-group input {
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    .form-group input:focus {
+      outline: none;
+      border-color: #007AFF;
+    }
+    .color-picker {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .color-option {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .color-option.selected {
+      border-color: #333;
+      transform: scale(1.1);
+    }
+    .error-message {
+      color: #dc3545;
+      font-size: 14px;
+      margin-top: 4px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="time" id="time"></div>
+    <div class="date-weather">
+      <div class="date" id="date"></div>
+      <div class="weather" id="weather">
+        <!-- Weather content will be dynamically inserted -->
+      </div>
+    </div>
+    <input type="text" class="search-box" placeholder="Search or enter website" id="search-box">
+    
+    <div class="apps-section">
+      <h2 class="section-title">Can you solve this with AI?</h2><br>
+      <div class="apps-grid">
+        <a href="https://chat.openai.com" target="_blank" class="app-tile ai">
+          <div class="app-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="#10A37F">
+              <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/>
+            </svg>
+          </div>
+          <span class="app-name">ChatGPT</span>
+        </a>
+        <a href="https://claude.ai" target="_blank" class="app-tile ai">
+          <div class="app-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="#8C8CA1">
+              <path d="M12 2L2 7V17L12 22L22 17V7L12 2ZM12 4.236L19.382 7.938L12 11.764L4.618 7.938L12 4.236ZM4 9.319L11 12.945V19.681L4 16.055V9.319ZM13 19.681V12.945L20 9.319V16.055L13 19.681Z"/>
+            </svg>
+          </div>
+          <span class="app-name">Claude</span>
+        </a>
+        <a href="https://gemini.google.com" target="_blank" class="app-tile ai">
+          <div class="app-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="#1A73E8">
+              <path d="M12 3L3 8.5V15.5L12 21L21 15.5V8.5L12 3ZM12 5.311L18.395 9.5L12 13.689L5.605 9.5L12 5.311ZM5 10.811L11 14.689V18.689L5 14.811V10.811ZM13 18.689V14.689L19 10.811V14.811L13 18.689Z"/>
+            </svg>
+          </div>
+          <span class="app-name">Gemini</span>
+        </a>
+        <a href="https://www.perplexity.ai" target="_blank" class="app-tile ai">
+          <div class="app-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="#5C33BE">
+              <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM11 7H13V13H11V7ZM11 15H13V17H11V15Z"/>
+            </svg>
+          </div>
+          <span class="app-name">Perplexity</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="product-hunt-section">
+      <div class="product-hunt-header">
+        <div class="product-hunt-logo">
+          <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+            <path d="M40 20C40 31.0457 31.0457 40 20 40C8.9543 40 0 31.0457 0 20C0 8.9543 8.9543 0 20 0C31.0457 0 40 8.9543 40 20Z" fill="#DA552F"/>
+            <path d="M22.5 16H17.5V20H22.5C23.8807 20 25 18.8807 25 17.5C25 16.1193 23.8807 15 22.5 15H17.5V25H15V11H22.5C25.5376 11 28 13.4624 28 16.5C28 19.5376 25.5376 22 22.5 22H20V20H22.5V16Z" fill="white"/>
+          </svg>
+        </div>
+        <h2 class="section-title">Top Products Today</h2>
+      </div>
+      <div class="products-grid" id="productHuntGrid">
+        <!-- Product Hunt items will be loaded dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="modalBackdrop"></div>
+  <div class="customize-modal" id="customizeModal">
+    <h3 class="modal-title">Customize Productivity Apps</h3>
+    <div class="app-list" id="appList">
+      <!-- App options will be loaded dynamically -->
+    </div>
+    
+    <div class="add-custom-app">
+      <h4>Add Custom App</h4>
+      <form class="custom-app-form" id="customAppForm">
+        <div class="form-group">
+          <label for="appName">App Name</label>
+          <input type="text" id="appName" required placeholder="e.g. My App">
+          <div class="error-message" id="nameError">Please enter a valid name</div>
+        </div>
+        <div class="form-group">
+          <label for="appUrl">URL</label>
+          <input type="url" id="appUrl" required placeholder="https://example.com">
+          <div class="error-message" id="urlError">Please enter a valid URL</div>
+        </div>
+        <div class="form-group">
+          <label>Icon Color</label>
+          <div class="color-picker" id="colorPicker">
+            <div class="color-option selected" style="background: #007AFF" data-color="#007AFF"></div>
+            <div class="color-option" style="background: #34C759" data-color="#34C759"></div>
+            <div class="color-option" style="background: #FF9500" data-color="#FF9500"></div>
+            <div class="color-option" style="background: #FF3B30" data-color="#FF3B30"></div>
+            <div class="color-option" style="background: #5856D6" data-color="#5856D6"></div>
+            <div class="color-option" style="background: #AF52DE" data-color="#AF52DE"></div>
+          </div>
+        </div>
+        <button type="submit" class="modal-btn primary">Add App</button>
+      </form>
+    </div>
+
+    <div class="modal-actions">
+      <button class="modal-btn secondary" id="cancelCustomize">Cancel</button>
+      <button class="modal-btn primary" id="saveCustomize">Save Changes</button>
+    </div>
+  </div>
+
+  <script src="newtab.js"></script>
+</body>
+</html> 

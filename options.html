@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AI Nudge Settings</title>
+  <style>
+    body {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+    .section {
+      margin-bottom: 24px;
+      padding: 20px;
+      border-radius: 8px;
+      background: #f8f9fa;
+    }
+    h1, h2, h3 {
+      color: #1a1a1a;
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #4a4a4a;
+    }
+    input[type="number"],
+    input[type="text"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 16px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+    .checkbox-group {
+      margin-bottom: 16px;
+    }
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+    button {
+      background: #4f46e5;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-right: 8px;
+    }
+    button:hover {
+      background: #4338ca;
+    }
+    #status {
+      margin-top: 16px;
+      padding: 8px;
+      border-radius: 4px;
+    }
+    .success {
+      background: #dcfce7;
+      color: #166534;
+    }
+    .info-text {
+      margin-bottom: 16px;
+    }
+    .api-key-group {
+      margin-bottom: 16px;
+    }
+    .help-link {
+      color: #4f46e5;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>AI Nudge Settings</h1>
+
+  <div class="section">
+    <h2>General Settings</h2>
+    <div class="checkbox-group">
+      <label class="checkbox-label">
+        <input type="checkbox" id="enabled">
+        Enable notifications
+      </label>
+    </div>
+    
+    <label>
+      Show notification every
+      <input type="number" id="frequency" min="1" value="30"> minutes
+    </label>
+  </div>
+
+  <div class="section">
+    <h2>Domain Settings</h2>
+    <div>
+      <label for="domainMode">Notification Display Mode:</label>
+      <select id="domainMode">
+        <option value="all">Show on all domains</option>
+        <option value="specific">Show only on specific domains</option>
+        <option value="exclude">Show on all except excluded domains</option>
+      </select>
+    </div>
+
+    <div id="specificDomainsSection">
+      <h3>Specific Domains</h3>
+      <p>Enter domains where notifications should appear (one per line)</p>
+      <textarea id="specificDomains" placeholder="Example:&#10;gmail.com&#10;docs.google.com"></textarea>
+    </div>
+
+    <div id="excludeDomainsSection">
+      <h3>Excluded Domains</h3>
+      <p>Enter domains where notifications should not appear (one per line)</p>
+      <textarea id="excludeDomains" placeholder="Example:&#10;youtube.com&#10;netflix.com"></textarea>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>AI Services</h2>
+    <div class="checkbox-group">
+      <label class="checkbox-label">
+        <input type="checkbox" id="enableChatGPT">
+        Enable ChatGPT
+      </label>
+    </div>
+    <div class="checkbox-group">
+      <label class="checkbox-label">
+        <input type="checkbox" id="enableClaude">
+        Enable Claude
+      </label>
+    </div>
+    <div class="checkbox-group">
+      <label class="checkbox-label">
+        <input type="checkbox" id="enableGemini">
+        Enable Gemini
+      </label>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>API Keys</h2>
+    <p class="info-text">These keys are required for certain features. Please obtain your own API keys from the respective services.</p>
+    
+    <div class="api-key-group">
+      <label for="weatherApiKey">OpenWeather API Key</label>
+      <input type="password" id="weatherApiKey" placeholder="Enter your OpenWeather API key">
+      <a href="https://openweathermap.org/api" target="_blank" class="help-link">Get API Key</a>
+    </div>
+
+    <div class="api-key-group">
+      <label for="openaiApiKey">OpenAI API Key</label>
+      <input type="password" id="openaiApiKey" placeholder="Enter your OpenAI API key">
+      <a href="https://platform.openai.com/api-keys" target="_blank" class="help-link">Get API Key</a>
+    </div>
+
+    <div class="api-key-group">
+      <label for="productHuntApiKey">Product Hunt API Key</label>
+      <input type="password" id="productHuntApiKey" placeholder="Enter your Product Hunt API key">
+      <a href="https://api.producthunt.com/v2/docs" target="_blank" class="help-link">Get API Key</a>
+    </div>
+  </div>
+
+  <div class="button-group">
+    <button id="save">Save Settings</button>
+    <button id="reset">Reset to Defaults</button>
+  </div>
+
+  <div id="status"></div>
+  <div id="savedMessage" style="display: none;" class="success">Settings saved successfully!</div>
+
+  <script src="options.js"></script>
+</body>
+</html>

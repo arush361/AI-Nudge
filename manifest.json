@@ -1,0 +1,50 @@
+{
+  "manifest_version": 3,
+  "name": "AI Nudge",
+  "version": "1.0",
+  "description": "A gentle nudge to consider AI assistance for your tasks, with smart reminders and productivity tools",
+  "permissions": [
+    "storage",
+    "geolocation"
+  ],
+  "host_permissions": [
+    "https://api.openweathermap.org/*",
+    "https://api.producthunt.com/*",
+    "https://api.openai.com/*"
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'self' https://api.openweathermap.org https://api.producthunt.com https://api.openai.com;"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "options_page": "options.html",
+  "content_scripts": [{
+    "matches": [
+      "http://*/*",
+      "https://*/*"
+    ],
+    "js": ["content_script.js"],
+    "css": ["styles.css"]
+  }],
+  "web_accessible_resources": [{
+    "resources": ["newtab.html", "newtab.js", "popup.js", "options.js", "styles.css"],
+    "matches": ["<all_urls>"]
+  }]
+}

@@ -1,0 +1,196 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>AI Task Assistant</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    .subtitle {
+      font-size: 18px;
+      opacity: 0.9;
+      margin-bottom: 30px;
+    }
+    .task-input {
+      width: 100%;
+      padding: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-family: inherit;
+      font-size: 16px;
+      resize: vertical;
+      min-height: 100px;
+      margin-bottom: 30px;
+    }
+    .task-input::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+    .task-input:focus {
+      outline: none;
+      border-color: rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.15);
+    }
+    .ai-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .ai-button {
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      padding: 15px 25px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      min-width: 120px;
+    }
+    .ai-button:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+    .suggestions {
+      margin-top: 30px;
+      text-align: left;
+    }
+    .suggestions h3 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      opacity: 0.9;
+    }
+    .suggestion-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .suggestion-tag {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .suggestion-tag:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: translateY(-1px);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>✨ AI Task Assistant</h1>
+    <p class="subtitle">Describe what you're trying to accomplish</p>
+    
+    <textarea 
+      class="task-input" 
+      id="taskInput" 
+      placeholder="What task would you like help with? (e.g., 'Write a professional email', 'Explain quantum physics', 'Create a to-do list')">
+    </textarea>
+    
+    <div class="ai-buttons">
+      <a href="#" class="ai-button" data-platform="chatgpt">ChatGPT</a>
+      <a href="#" class="ai-button" data-platform="claude">Claude</a>
+      <a href="#" class="ai-button" data-platform="gemini">Gemini</a>
+    </div>
+    
+    <div class="suggestions">
+      <h3>Quick suggestions:</h3>
+      <div class="suggestion-tags">
+        <span class="suggestion-tag" data-suggestion="Help me write a professional email">Write email</span>
+        <span class="suggestion-tag" data-suggestion="Summarize this article for me">Summarize text</span>
+        <span class="suggestion-tag" data-suggestion="Create a to-do list for my project">Make to-do list</span>
+        <span class="suggestion-tag" data-suggestion="Explain this concept in simple terms">Explain concept</span>
+        <span class="suggestion-tag" data-suggestion="Help me brainstorm ideas">Brainstorm</span>
+        <span class="suggestion-tag" data-suggestion="Review and improve this text">Review text</span>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Handle AI platform selection
+    document.querySelectorAll('.ai-button').forEach(button => {
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+        const platform = button.dataset.platform;
+        const input = document.getElementById('taskInput').value;
+        openAI(platform, input);
+      });
+    });
+    
+    // Handle suggestion tags
+    document.querySelectorAll('.suggestion-tag').forEach(tag => {
+      tag.addEventListener('click', () => {
+        document.getElementById('taskInput').value = tag.dataset.suggestion;
+      });
+    });
+    
+    function openAI(platform, input) {
+      let url;
+      switch (platform) {
+        case 'chatgpt':
+          url = 'https://chat.openai.com/';
+          break;
+        case 'claude':
+          url = 'https://claude.ai/chat';
+          break;
+        case 'gemini':
+          const encodedInput = encodeURIComponent(input);
+          url = `https://gemini.google.com/app?q=${encodedInput}`;
+          break;
+      }
+      
+      // Copy to clipboard for ChatGPT and Claude
+      if (input && (platform === 'chatgpt' || platform === 'claude')) {
+        navigator.clipboard.writeText(input).catch(() => {
+          // Fallback for clipboard
+          const textarea = document.createElement('textarea');
+          textarea.value = input;
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textarea);
+        });
+      }
+      
+      window.open(url, '_blank');
+      window.close();
+    }
+    
+    // Focus the textarea
+    document.getElementById('taskInput').focus();
+  </script>
+</body>
+</html>
