@@ -45,10 +45,10 @@ We often forget how much AI can assist in daily workflows—whether it's rewriti
 
 ## 🖼 Screenshots
 
-| 1280x800 | 640x400 |
-|----------|---------|
-| ![screenshot1](assets/screenshot1_1280x800.jpg) | ![screenshot1_small](assets/screenshot1_640x400.jpg) |
-| ![screenshot2](assets/screenshot2_1280x800.jpg) | ![screenshot2_small](assets/screenshot2_640x400.jpg) |
+| 1280x800 |
+|----------|
+| ![screenshot1](assets/screenshot1_1280x800.jpg) |
+| ![screenshot2](assets/screenshot2_1280x800.jpg) |
 
 ## 📫 Support
 
