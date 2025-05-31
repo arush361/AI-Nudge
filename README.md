@@ -54,10 +54,5 @@ We often forget how much AI can assist in daily workflows—whether it's rewriti
 
 For help or feature requests, email [arush361@gmail.com](mailto:arush361@gmail.com)
 
-## 📄 License
-
-[MIT License](LICENSE)
-
----
 
 > Made with 💡 by [Arush](mailto:arush361@gmail.com) | Ideas deserve better timing.
